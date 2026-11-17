@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduHub - Zamonaviy Ta'lim Platformasi</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+
+  <!-- ================= TOP TOAST BILDIRISHNOMALAR ================= -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3"></div>
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 bg-gradient-to-tr from-brand-600 to-indigo-400 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition duration-200">
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+        </div>
+        <div>
+          <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">Edu<span class="text-brand-600">Hub</span></span>
+          <span class="block text-[10px] font-bold tracking-wider text-slate-400 uppercase -mt-1">Online Academy</span>
+        </div>
+      </a>
+
+      <!-- Markaziy Menyu -->
+      <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
+        <a href="#courses-section" class="hover:text-brand-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-book-open text-xs"></i> Barcha kurslar
+        </a>
+        <a href="#about-section" class="hover:text-brand-600 transition flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-xs"></i> Platforma haqida
+        </a>
+        <span id="nav-admin-badge" class="hidden px-2.5 py-1 text-xs font-bold rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+          <i class="fa-solid fa-shield-halved mr-1"></i> Admin Rejimi
+        </span>
+      </nav>
+
+      <!-- O'ng tomondagi Auth Tugmalar -->
+      <div id="auth-actions" class="flex items-center gap-3">
+        <!-- Yuklanish indikatori -->
+        <div class="text-slate-400 text-sm animate-pulse">Yuklanmoqda...</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative overflow-hidden bg-gradient-to-b from-indigo-50/70 via-white to-slate-50 pt-16 pb-20 border-b border-slate-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 border border-brand-100 text-brand-700 text-xs font-semibold uppercase tracking-wider mb-6">
+          <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
+          Eng so'nggi zamonaviy bilimlar
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
+          Kelajak kasblarini <span class="bg-gradient-to-r from-brand-600 to-violet-600 bg-clip-text text-transparent">EduHub</span> bilan o'rganing!
+        </h1>
+        <p class="mt-6 text-lg sm:text-xl text-slate-600 leading-relaxed font-normal">
+          Dasturlash, dizayn, sun'iy intellekt va biznes sohalarida eng sifatli onlayn kurslar. Bilimingizni oshiring va orzungizdagi kasbga erishing.
+        </p>
+
+        <!-- Qidiruv va Kurslar tugmasi -->
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#courses-section" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-base shadow-xl shadow-brand-600/30 hover:shadow-brand-600/50 transition duration-200 flex items-center justify-center gap-3">
+            <i class="fa-solid fa-compass"></i> Kurslarni ko'rish
+          </a>
+          <button id="hero-admin-create-btn" onclick="openCreateModal()" class="hidden w-full sm:w-auto px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base shadow-xl shadow-emerald-600/30 transition duration-200 flex items-center justify-center gap-3">
+            <i class="fa-solid fa-plus-circle"></i> Yangi kurs qo'shish
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ADMIN DASHBOARD BANNER (Faqat admin uchun ko'rinadi) ================= -->
+  <section id="admin-dashboard-section" class="hidden py-8 bg-slate-900 text-white border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
+            <i class="fa-solid fa-shield-halved"></i> Boshqaruv Markazi (Admin Dashboard)
+          </div>
+          <h2 class="text-2xl font-bold mt-1">Platforma statistikasi va kurslar boshqaruvi</h2>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <div class="bg-slate-800/80 px-6 py-3 rounded-xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Foydalanuvchilar</div>
+            <div id="stat-total-users" class="text-2xl font-extrabold text-white mt-0.5">0</div>
+          </div>
+          <div class="bg-slate-800/80 px-6 py-3 rounded-xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400 font-medium uppercase tracking-wider">Jami Kurslar</div>
+            <div id="stat-total-courses" class="text-2xl font-extrabold text-indigo-400 mt-0.5">0</div>
+          </div>
+          <button onclick="openCreateModal()" class="px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Kurs yaratish
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KURSLAR RO'YXATI ================= -->
+  <section id="courses-section" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 w-full">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200">
+      <div>
+        <h2 class="text-3xl font-extrabold text-slate-900">Mavjud Kurslar</h2>
+        <p class="text-slate-500 text-sm mt-1">O'zingizga ma'qul bo'lgan kursni tanlang va bugunoq o'rganishni boshlang</p>
+      </div>
+
+      <!-- Qidiruv maydoni -->
+      <div class="relative w-full md:w-80">
+        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input 
+          type="text" 
+          id="course-search-input" 
+          placeholder="Kurs nomi bo'yicha qidirish..." 
+          oninput="handleSearch(this.value)"
+          class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 shadow-sm"
+        >
+      </div>
+    </div>
+
+    <!-- Kurslar Grid konteyneri -->
+    <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- JavaScript orqali to'ldiriladi -->
+      <div class="col-span-full py-16 text-center text-slate-400">
+        <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-brand-600"></i>
+        <p>Kurslar yuklanmoqda...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer id="about-section" class="bg-white border-t border-slate-200 mt-auto py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-slate-500">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+            <i class="fa-solid fa-graduation-cap text-sm"></i>
+          </div>
+          <span class="font-bold text-slate-800 text-base">EduHub</span>
+          <span>&copy; 2026 Barcha huquqlar himoyalangan.</span>
+        </div>
+        <div class="flex items-center gap-6">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-server text-emerald-500 text-xs"></i> Node.js & Express.js</span>
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-database text-emerald-600 text-xs"></i> MongoDB Atlas</span>
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-brand-500 text-xs"></i> JWT & RBAC</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODALLAR ================= -->
+
+  <!-- 1. LOGIN MODAL -->
+  <div id="login-modal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-scaleUp">
+      <button onclick="closeModal('login-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-right-to-bracket"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-900">Tizimga kirish</h3>
+        <p class="text-slate-500 text-sm mt-1">Platformadan to'liq foydalanish uchun profilingizga kiring</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Email manzil</label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="email" 
+              id="login-email" 
+              required 
+              placeholder="example@mail.com"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Parol</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="password" 
+              id="login-password" 
+              required 
+              placeholder="••••••••"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+            >
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          id="login-submit-btn" 
+          class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition duration-200 mt-2 flex items-center justify-center gap-2"
+        >
+          <span>Kirish</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-6 text-sm text-slate-500">
+        Hisobingiz yo'qmi? 
+        <button onclick="switchModal('login-modal', 'register-modal')" class="text-brand-600 font-bold hover:underline">
+          Ro'yxatdan o'tish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. REGISTER MODAL -->
+  <div id="register-modal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-scaleUp">
+      <button onclick="closeModal('register-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-900">Ro'yxatdan o'tish</h3>
+        <p class="text-slate-500 text-sm mt-1">Yangi hisob oching va ta'lim oling</p>
+      </div>
+
+      <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Email manzil</label>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="email" 
+              id="register-email" 
+              required 
+              placeholder="example@mail.com"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Parol (kamida 6 ta belgi)</label>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+              type="password" 
+              id="register-password" 
+              minlength="6" 
+              required 
+              placeholder="••••••••"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Foydalanuvchi roli</label>
+          <select 
+            id="register-role" 
+            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition"
+          >
+            <option value="user">Talaba (Foydalanuvchi)</option>
+            <option value="admin">Administrator (Admin - kurs yaratuvchi)</option>
+          </select>
+          <p class="text-[11px] text-slate-400 mt-1">Admin roli tanlansa kurslarni qo'shish va o'chirish huquqi beriladi.</p>
+        </div>
+
+        <button 
+          type="submit" 
+          id="register-submit-btn" 
+          class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition duration-200 mt-2 flex items-center justify-center gap-2"
+        >
+          <span>Hisob yaratish</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-6 text-sm text-slate-500">
+        Allaqachon hisobingiz bormi? 
+        <button onclick="switchModal('register-modal', 'login-modal')" class="text-emerald-600 font-bold hover:underline">
+          Kirish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. PROFIL MODAL -->
+  <div id="profile-modal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative animate-scaleUp">
+      <button onclick="closeModal('profile-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-gradient-to-tr from-brand-600 to-indigo-400 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 text-2xl shadow-lg">
+          <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-slate-900">Mening profilim</h3>
+        <span id="profile-role-badge" class="inline-block mt-1 px-3 py-0.5 text-xs font-bold rounded-full uppercase"></span>
+      </div>
+
+      <div class="space-y-4 bg-slate-50 p-5 rounded-xl border border-slate-200 text-sm">
+        <div>
+          <span class="text-xs text-slate-400 uppercase font-semibold">Foydalanuvchi ID:</span>
+          <div id="profile-id" class="font-mono text-slate-700 font-medium break-all mt-0.5"></div>
+        </div>
+        <div>
+          <span class="text-xs text-slate-400 uppercase font-semibold">Email:</span>
+          <div id="profile-email" class="text-slate-900 font-bold mt-0.5"></div>
+        </div>
+        <div>
+          <span class="text-xs text-slate-400 uppercase font-semibold">Ro'yxatdan o'tgan sana:</span>
+          <div id="profile-created-at" class="text-slate-700 mt-0.5"></div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex gap-3">
+        <button onclick="handleLogout()" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold rounded-xl border border-rose-200 transition flex items-center justify-center gap-2 text-sm">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Tizimdan chiqish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. KURSNI YARATISH / TAHRIRLASH MODALI (ADMIN) -->
+  <div id="course-modal" class="modal-backdrop hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 relative animate-scaleUp">
+      <button onclick="closeModal('course-modal')" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-lg">
+            <i id="course-modal-icon" class="fa-solid fa-plus"></i>
+          </div>
+          <div>
+            <h3 id="course-modal-title" class="text-xl font-bold text-slate-900">Yangi kurs qo'shish</h3>
+            <p class="text-slate-500 text-xs">Kurs parametrlarini to'ldiring</p>
+          </div>
+        </div>
+      </div>
+
+      <form id="course-form" onsubmit="handleCourseSubmit(event)" class="space-y-4">
+        <input type="hidden" id="course-id">
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Kurs nomi (Title)</label>
+          <input 
+            type="text" 
+            id="course-title" 
+            required 
+            placeholder="Masalan: Node.js va Express.js Noldan Professionalgacha"
+            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Kurs narxi (UZS)</label>
+          <input 
+            type="number" 
+            id="course-price" 
+            required 
+            min="0"
+            placeholder="Masalan: 1200000"
+            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Kurs tavsifi (Description)</label>
+          <textarea 
+            id="course-description" 
+            required 
+            rows="4" 
+            placeholder="Kurs haqida batafsil ma'lumot, kimlar uchun mo'ljallangan va nimalar o'rgatiladi..."
+            class="w-full px-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white transition"
+          ></textarea>
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <button 
+            type="button" 
+            onclick="closeModal('course-modal')" 
+            class="w-1/2 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition text-sm"
+          >
+            Bekor qilish
+          </button>
+          <button 
+            type="submit" 
+            id="course-submit-btn" 
+            class="w-1/2 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/30 transition text-sm flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-save"></i> Saqlash
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Bog'liqliklar
+node_modules/
+
+# Maxfiy muhit o'zgaruvchilari
+.env
+
+# Jurnallar va keslar
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
