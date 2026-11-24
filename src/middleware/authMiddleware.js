@@ -32,6 +32,16 @@ export const authMiddleware = async (req, res, next) => {
       });
     }
 
+    // EMAIL TASDIQLANGANLIGINI TEKSHIRISH (Verified check)
+    if (!user.isVerified) {
+      return res.status(403).json({
+        success: false,
+        requireVerification: true,
+        email: user.email,
+        message: 'Elektron pochtangiz tasdiqlanmagan. Iltimos, pochtangizni tasdiqlang.'
+      });
+    }
+
     // req.user ga foydalanuvchini biriktirish
     req.user = user;
     next();

@@ -26,7 +26,7 @@ app.use(
 // 2. CORS sozlamalari
 app.use(
   cors({
-    origin: true, // har qanday origin yoki localhost bilan ishlash uchun moslashuvchan
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -46,7 +46,11 @@ app.use('/auth', authRoutes);
 app.use('/', userRoutes);          // /profile va /admin/dashboard
 app.use('/courses', courseRoutes); // /courses CRUD
 
-// 6. Saytning SPA (Single Page) marshruti - bosh sahifani ochish
+// 6. Sayt sahifalari
+app.get('/verify-email', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/verify-email.html'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });

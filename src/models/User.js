@@ -30,6 +30,23 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
       default: null
+    },
+    // Email tasdiqlash maydonlari
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
+    verificationCode: {
+      type: String,
+      default: null
+    },
+    verificationCodeExpires: {
+      type: Date,
+      default: null
+    },
+    lastVerificationResend: {
+      type: Date,
+      default: null
     }
   },
   {
@@ -42,11 +59,13 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// JSON ko'rinishida qaytarilganda parolni yashirish
+// JSON ko'rinishida qaytarilganda maxfiy ma'lumotlarni yashirish
 userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
   delete userObject.refreshToken;
+  delete userObject.verificationCode;
+  delete userObject.verificationCodeExpires;
   return userObject;
 };
 

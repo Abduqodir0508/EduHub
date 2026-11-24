@@ -24,6 +24,14 @@ async function apiRequest(endpoint, options = {}) {
 
     const data = await response.json();
 
+    // Agar email tasdiqlanmaganligi sababli 403 qaytsa -> /verify-email ga yo'naltirish
+    if (response.status === 403 && data?.requireVerification) {
+      if (data.email) {
+        localStorage.setItem('eduhub_pending_email', data.email);
+        window.location.href = `/verify-email?email=${encodeURIComponent(data.email)}`;
+      }
+    }
+
     // Agar token muddati tugagan bo'lsa (401), refresh token orqali yangilashga urinish
     if (response.status === 401 && state.token && endpoint !== '/auth/refresh' && endpoint !== '/auth/login') {
       const refreshed = await tryRefreshToken();
@@ -288,6 +296,16 @@ async function handleLogin(e) {
   btn.disabled = false;
   btn.innerHTML = `Kirish`;
 
+  // Agar email tasdiqlanmagan bo'lsa -> /verify-email sahifasiga yo'naltirish
+  if (res.data?.requireVerification) {
+    showToast(res.data.message || "Elektron pochtangiz tasdiqlanmagan!", 'info');
+    localStorage.setItem('eduhub_pending_email', email);
+    setTimeout(() => {
+      window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+    }, 1200);
+    return;
+  }
+
   if (res.ok && res.data.success) {
     state.token = res.data.accessToken;
     state.user = res.data.user;
@@ -325,13 +343,20 @@ async function handleRegister(e) {
   btn.innerHTML = `Hisob yaratish`;
 
   if (res.ok && res.data.success) {
-    showToast("Muvaffaqiyatli ro'yxatdan o'tdingiz! Endi tizimga kiring.", 'success');
+    showToast(res.data.message || "Ro'yxatdan muvaffaqiyatli o'tildi!", 'success');
     closeModal('register-modal');
     document.getElementById('register-form').reset();
 
-    // Login modalini ochish va emailni to'ldirish
-    document.getElementById('login-email').value = email;
-    openModal('login-modal');
+    // Agar tasdiqlash talab qilinsa, darhol /verify-email ga yo'naltirish
+    if (res.data.requireVerification) {
+      localStorage.setItem('eduhub_pending_email', email);
+      setTimeout(() => {
+        window.location.href = `/verify-email?email=${encodeURIComponent(email)}`;
+      }, 1000);
+    } else {
+      document.getElementById('login-email').value = email;
+      openModal('login-modal');
+    }
   } else {
     showToast(res.data?.message || "Ro'yxatdan o'tishda xatolik", 'error');
   }
